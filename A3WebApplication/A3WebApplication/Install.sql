@@ -73,7 +73,7 @@ INSERT INTO tbCategory -- 4 categories
 ('Beers', 'Beer.jpg')
 
 INSERT INTO tbProduct  -- 6 products in category one, 3 products in category two, 1 in category three
-(Name, PrimaryImagePath, Prize, ProductID) VALUES
+(Name, PrimaryImagePath, Prize, CategoryID) VALUES
 ('Mezcal', 'Mezcal.jpg', 58.12, 1),
 ('St.George', 'St.George.jpg', 43.56, 1),
 ('Teeling', 'Teeling.jpg', 44.25, 1),
@@ -103,18 +103,119 @@ INSERT INTO tbOrderDetail -- one item on the first order, 3 items on the second 
 -- NOTE: All Insert procs *MUST* return the new identity number of the primary key.
 -- Example: if you use spInsertCategory after there are 4 categories, it should return the value 5.
 -- If a procedure says: ByID, it means return ALL rows in the table if an ID is not supplied (ISNULL)
-
-spGetCategoryByID
-spInsertCategory
-spDeleteCategory
-spUpdateCategory
-
-spLogin
-spGetCustomerByID
-spInsertCustomer
-spDeleteCustomer
-spUpdateCustomer
-
+GO
+CREATE PROC spGetCategoryByID
+(
+	@CategoryID int
+)
+AS BEGIN
+	SELECT CategoryID, Name, './Images/' + ImagePath as ImagePath FROM tbCategory
+END
+GO
+CREATE PROC spInsertCategory
+(
+	@Name			VARCHAR(MAX),
+	@ImagePath		VARCHAR(MAX)
+)
+AS BEGIN
+	INSERT INTO tbCategory (Name, ImagePath) 
+	VALUES				   (@Name, ISNULL(@ImagePath, 'NoImages.jpg'))
+END
+GO
+CREATE PROC spDeleteCategory
+(
+	@CategoryID		INT
+)
+AS BEGIN
+	DELETE FROM tbCategory where CategoryID = @CategoryID
+END
+GO
+CREATE PROC spUpdateCategory
+(
+	@CategoryID		INT,
+	@Name			VARCHAR(MAX),
+	@ImagePath		VARCHAR(MAX)
+)
+AS BEGIN
+	UPDATE tbCategory SET
+	Name = @Name,
+	ImagePath = ISNULL(@ImagePath, ImagePath)
+	WHERE CategoryID = @CategoryID
+END
+GO
+CREATE PROC spLogin
+(
+	@UserName	    VARCHAR(MAX),
+	@Password		VARCHAR(MAX)
+)
+AS BEGIN
+	IF EXISTS (SELECT UserName, Password FROM tbCustomer where UserName = @UserName and Password = @Password)
+		BEGIN
+			SELECT * FROM tbCustomer WHERE @UserName = UserName and @Password = Password
+		END
+	ELSE 
+		BEGIN
+			SELECT 'Invalid' AS UserName
+		END
+END
+GO
+CREATE PROC spGetCustomerByID
+(
+	@CustomerID		INT
+)
+AS BEGIN
+	SELECT * FROM tbCustomer WHERE CustomerID = @CustomerID
+END
+GO
+CREATE PROC spInsertCustomer
+(
+	@FirstName		VARCHAR(MAX),
+	@LastName		VARCHAR(MAX),
+	@Address		VARCHAR(MAX),
+	@City		    VARCHAR(MAX),
+	@PhoneNumber	VARCHAR(MAX),
+	@UserName		VARCHAR(MAX),
+	@Password		VARCHAR(MAX),
+	@AccessLevel	BIT
+)
+AS BEGIN
+	INSERT INTO tbCustomer(FirstName, LastName, Address, City, PhoneNumber, UserName, Password, AccessLevel)
+	VALUES				  (@FirstName, @LastName, @Address, @City, @PhoneNumber, @UserName, @Password, @AccessLevel)
+END
+GO
+CREATE PROC spDeleteCustomer
+(
+	@CustomerID INT
+)
+AS BEGIN
+	DELETE FROM tbCustomer WHERE CustomerID = @CustomerID
+END
+GO
+CREATE PROC spUpdateCustomer
+(
+	@CustomerID		INT,
+	@FirstName		VARCHAR(MAX),
+	@LastName		VARCHAR(MAX),
+	@Address		VARCHAR(MAX),
+	@City		    VARCHAR(MAX),
+	@PhoneNumber	VARCHAR(MAX),
+	@UserName		VARCHAR(MAX),
+	@Password		VARCHAR(MAX),
+	@AccessLevel	BIT
+)
+AS BEGIN
+	UPDATE tbCustomer SET
+	FirstName = @FirstName,
+	LastName = @LastName,
+	Address = @Address,
+	City = @City,
+	PhoneNumber = @PhoneNumber,
+	UserName = @UserName,
+	Password = @Password,
+	AccessLevel = @AccessLevel
+	WHERE CustomerID = @CustomerID
+END
+GO
 spGetProductsByCategoryID
 spGetProductByID
 spInsertProduct
