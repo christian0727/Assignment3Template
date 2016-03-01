@@ -65,7 +65,37 @@ namespace A3ClassLibrary
         
         // TODO 
         // 2 MARKS: write a method which impliments spInsertProduct
+        public void InsertProduct()
+        {
+            string connStr = ConfigurationManager.ConnectionStrings["dbA3ConnStr"].ConnectionString;
+            DAL_Project.DAL d = new DAL_Project.DAL(connStr);
+            d.AddParam("CategoryID", CategoryID);
+            d.AddParam("Name", Name);
+            d.AddParam("Price", Price);
+            d.AddParam("PrimaryImagePath", PrimaryImagePath);
+            DataSet ds = d.ExecuteProcedure("spInsertProduct");
+            this.ProductID = Convert.ToInt32(ds.Tables[0].Rows[0]["NewProductID"].ToString());
+        }
         // 2 MARKS: write a method which impliments spDeleteProduct
+        public void DeleteProduct()
+        {
+            string connStr = ConfigurationManager.ConnectionStrings["dbA3ConnStr"].ConnectionString;
+            DAL_Project.DAL d = new DAL_Project.DAL(connStr);
+            d.AddParam("ProductID", ProductID);
+            d.ExecuteProcedure("spDeleteProduct");
+        }
+
         // 2 MARKS: write a method which impliments spUpdateProduct
+        public void UpdateProduct()
+        {
+            string connStr = ConfigurationManager.ConnectionStrings["dbA3ConnStr"].ConnectionString;
+            DAL_Project.DAL d = new DAL_Project.DAL(connStr);
+            d.AddParam("CategoryID", CategoryID);
+            d.AddParam("Name", Name);
+            d.AddParam("Price", Price);
+            d.AddParam("PrimaryImagePath", PrimaryImagePath);
+            d.AddParam("ProductID", ProductID);
+            d.ExecuteProcedure("spUpdateProduct");
+        }
     }
 }

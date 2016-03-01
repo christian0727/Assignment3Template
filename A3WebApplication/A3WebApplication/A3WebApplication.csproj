@@ -66,6 +66,20 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\Beers.jpg" />
+    <Content Include="Images\Cognac.jpg" />
+    <Content Include="Images\Liqueurs.jpg" />
+    <Content Include="Images\Marlee.jpg" />
+    <Content Include="Images\MartinMiller.jpg" />
+    <Content Include="Images\Mezcal.jpg" />
+    <Content Include="Images\Molinari.jpg" />
+    <Content Include="Images\Pisco.jpg" />
+    <Content Include="Images\PondView.jpg" />
+    <Content Include="Images\Somrus.jpg" />
+    <Content Include="Images\Spirits.jpg" />
+    <Content Include="Images\St.George.jpg" />
+    <Content Include="Images\Teeling.jpg" />
+    <Content Include="Images\Wines.jpg" />
     <Content Include="packages.config" />
     <Content Include="MainMaster.Master" />
     <None Include="Web.Debug.config">
@@ -137,6 +151,7 @@
       <Name>A3ClassLibrary</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

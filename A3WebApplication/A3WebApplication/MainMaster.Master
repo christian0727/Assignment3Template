@@ -1,14 +1,92 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MainMaster.master.cs" Inherits="A3WebApplication.MainMaster" %>
 
 <!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title></title>
-</head>
+<html>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
 <body>
-    <form id="form1" runat="server">
-        9 MARKS TOTAL
+
+<div class="w3-light-grey w3-container w3-padding-64 w3-center">
+  <h1 class="w3-jumbo">Online Store</h1>
+  <p>Mission, Vission & Values</p>
+</div>
+
+<div class="w3-topnav w3-large w3-center w3-green">
+  <a href="#">Home</a>
+  <a href="#">Products</a>
+  <a href="#">Deals</a>
+  <a href="#">Stores</a>
+  <a href="#">Contact</a>
+  <a href="#">Account</a>
+</div>
+
+<div class="w3-container w3-margin w3-center w3-margin-bottom">
+  <div class="w3-row-padding">
+    <div class="w3-third">
+      <div class="w3-card-2 w3-light-grey w3-padding">
+        <h3>BLACK FRIDAY DEAL</h3>
+        <img src="http://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">  
+        <p>Buy 50 mobiles and get a gift card</p>
+      </div>
+    </div>
+
+    <div class="w3-third">
+      <div class="w3-card-2 w3-light-grey w3-padding">
+        <h3>BLACK FRIDAY DEAL</h3>
+        <img src="http://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">  
+        <p>Buy 50 mobiles and get a gift card</p>
+      </div>
+    </div>
+
+    <div class="w3-third">
+      <div class="w3-card-2 w3-light-grey w3-padding">
+        <h3>BLACK FRIDAY DEAL</h3>
+        <img src="http://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">  
+        <p>Buy 50 mobiles and get a gift card</p>
+      </div>
+    </div>
+  </div>
+  <br>
+  
+  <div class="w3-row-padding">
+    <div class="w3-third">
+      <div class="w3-card-2 w3-light-grey w3-padding">
+        <h3>BLACK FRIDAY DEAL</h3>
+        <img src="http://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">  
+        <p>Buy 50 mobiles and get a gift card</p>
+      </div>
+    </div>
+
+    <div class="w3-third">
+      <div class="w3-card-2 w3-light-grey w3-padding">
+        <h3>BLACK FRIDAY DEAL</h3>
+        <img src="http://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">  
+        <p>Buy 50 mobiles and get a gift card</p>
+      </div>
+    </div>
+
+    <div class="w3-third">
+      <div class="w3-card-2 w3-light-grey w3-padding">
+        <h3>BLACK FRIDAY DEAL</h3>
+        <img src="http://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">  
+        <p>Buy 50 mobiles and get a gift card</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="w3-container w3-center w3-green">
+  <h5>Footer</h5>
+  <p>Footer information goes here</p>
+</footer>
+     
+</body>
+</html> 
+
+
+<form id="form1" runat="server">
+        <%--9 MARKS TOTAL
         2 BONUS MARKS TOTAL
         TODO:
         - 5 MARKS: Make a consistent CSS theme (with CSS file), you may download one from the internet, you just have to impliment it.
@@ -16,8 +94,6 @@
         - 1 MARK: Show the Logout button only, if the customer is logged in
         - 1 MARK: Show a welcome message with the currently logged in Customer's email
         - 1 MARK: Show a link to the Admin area(s) if the Customer is logged in as an Admin
-        - BONUS 2 MARKS: show a number representing how many items are in the shopping cart right now
+        - BONUS 2 MARKS: show a number representing how many items are in the shopping cart right now--%>
         <asp:ContentPlaceHolder ID="ContentPlaceHolderMain" runat="server"></asp:ContentPlaceHolder>
     </form>
-</body>
-</html>

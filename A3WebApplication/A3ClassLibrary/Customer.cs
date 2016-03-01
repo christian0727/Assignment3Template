@@ -86,8 +86,62 @@ namespace A3ClassLibrary
 
         // TODO: 
         // BONUS 1 MARK: write method which impliments spGetCustomerByID
+        public void GetCustomerByID(int CustomerID)
+        {
+            string connStr = ConfigurationManager.ConnectionStrings["dbA3ConnStr"].ConnectionString;
+            DAL_Project.DAL d = new DAL_Project.DAL(connStr);
+            d.AddParam("CustomerID", CustomerID);
+            DataSet ds = d.ExecuteProcedure("spGetCustomerByID");
+
+            this.CustomerID = CustomerID;
+            FirstName = ds.Tables[0].Rows[0]["FirstName"].ToString();
+            LastName = ds.Tables[0].Rows[0]["LastName"].ToString();
+            Address = ds.Tables[0].Rows[0]["Address"].ToString();
+            City = ds.Tables[0].Rows[0]["City"].ToString();
+            PhoneNumber = ds.Tables[0].Rows[0]["PhoneNumber"].ToString();
+            UserName = ds.Tables[0].Rows[0]["UserName"].ToString();
+            IsAdmin = (bool)ds.Tables[0].Rows[0]["AccessLevel"];
+        }
+
         // BONUS 1 MARK: write method which impliments spInsertCustomer
+        public void InsertCustomer()
+        {
+            string connStr = ConfigurationManager.ConnectionStrings["dbA3ConnStr"].ConnectionString;
+            DAL_Project.DAL d = new DAL_Project.DAL(connStr);
+            d.AddParam("FirstName", FirstName);
+            d.AddParam("LastName", LastName);
+            d.AddParam("Address", Address);
+            d.AddParam("City", City);
+            d.AddParam("PhoneNumber", PhoneNumber);
+            d.AddParam("UserName", UserName);
+            d.AddParam("Password", Password);
+            d.AddParam("AccessLevel", IsAdmin);
+            DataSet ds = d.ExecuteProcedure("spInsertCustomer");
+            this.CustomerID = Convert.ToInt32(ds.Tables[0].Rows[0]["NewCustomerID"].ToString());
+        }
         // BONUS 1 MARK: write method which impliments spDeleteCustomer
+        public void DeleteCustomer()
+        {
+            string connStr = ConfigurationManager.ConnectionStrings["dbA3ConnStr"].ConnectionString;
+            DAL_Project.DAL d = new DAL_Project.DAL(connStr);
+            d.AddParam("CustomerID", CustomerID);
+            d.ExecuteProcedure("spDeleteCustomer");
+        }
         // BONUS 1 MARK: write method which impliments spUpdateCustomer
+        public void UpdateCustomer()
+        {
+            string connStr = ConfigurationManager.ConnectionStrings["dbA3ConnStr"].ConnectionString;
+            DAL_Project.DAL d = new DAL_Project.DAL(connStr);
+            d.AddParam("CustomerID", CustomerID);
+            d.AddParam("FirstName", FirstName);
+            d.AddParam("LastName", LastName);
+            d.AddParam("Address", Address);
+            d.AddParam("City", City);
+            d.AddParam("PhoneNumber", PhoneNumber);
+            d.AddParam("UserName", UserName);
+            d.AddParam("Password", Password);
+            d.AddParam("AccessLevel", IsAdmin);
+            d.ExecuteProcedure("spUpdateCustomer");
+        }
     }
 }

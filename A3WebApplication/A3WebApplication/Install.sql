@@ -37,7 +37,7 @@ CREATE TABLE tbProduct -- there are many products in a single category
 (
 	ProductID		INT PRIMARY KEY IDENTITY (1,1),
 	Name			VARCHAR(MAX),
-	Prize			DECIMAL(7,2),
+	Price			DECIMAL(7,2),
 	PrimaryImagePath VARCHAR(MAX),
 	CategoryID		INT REFERENCES tbCategory(CategoryID)
 )
@@ -73,7 +73,7 @@ INSERT INTO tbCategory -- 4 categories
 ('Beers', 'Beer.jpg')
 
 INSERT INTO tbProduct  -- 6 products in category one, 3 products in category two, 1 in category three
-(Name, PrimaryImagePath, Prize, CategoryID) VALUES
+(Name, PrimaryImagePath, Price, CategoryID) VALUES
 ('Mezcal', 'Mezcal.jpg', 58.12, 1),
 ('St.George', 'St.George.jpg', 43.56, 1),
 ('Teeling', 'Teeling.jpg', 44.25, 1),
@@ -116,11 +116,12 @@ GO
 CREATE PROC spInsertCategory
 (
 	@Name			VARCHAR(MAX),
-	@ImagePath		VARCHAR(MAX)
+	@ImagePath		VARCHAR(MAX) = NULL
 )
 AS BEGIN
 	INSERT INTO tbCategory (Name, ImagePath) 
 	VALUES				   (@Name, ISNULL(@ImagePath, 'NoImages.jpg'))
+	SELECT SCOPE_IDENTITY() AS 'NewCategoryID'
 END
 GO
 CREATE PROC spDeleteCategory
@@ -135,7 +136,7 @@ CREATE PROC spUpdateCategory
 (
 	@CategoryID		INT,
 	@Name			VARCHAR(MAX),
-	@ImagePath		VARCHAR(MAX)
+	@ImagePath		VARCHAR(MAX) 
 )
 AS BEGIN
 	UPDATE tbCategory SET
@@ -183,6 +184,7 @@ CREATE PROC spInsertCustomer
 AS BEGIN
 	INSERT INTO tbCustomer(FirstName, LastName, Address, City, PhoneNumber, UserName, Password, AccessLevel)
 	VALUES				  (@FirstName, @LastName, @Address, @City, @PhoneNumber, @UserName, @Password, @AccessLevel)
+	SELECT SCOPE_IDENTITY() AS 'NewCustomerID'
 END
 GO
 CREATE PROC spDeleteCustomer
@@ -239,13 +241,14 @@ GO
 CREATE PROC spInsertProduct
 (
 	@Name			VARCHAR(MAX),
-	@Prize			DECIMAL(7,2),
-	@PrimaryImagePath VARCHAR(MAX),
+	@Price			DECIMAL(7,2),
+	@PrimaryImagePath VARCHAR(MAX) = NULL,
 	@CategoryID		INT 
 )
 AS BEGIN
-	INSERT INTO tbProduct (Name, Prize, PrimaryImagePath, CategoryID)
-	VALUES				  (@Name, @Prize, ISNULL(@PrimaryImagePath, 'NoImages.jpg'), @CategoryID)
+	INSERT INTO tbProduct (Name, Price, PrimaryImagePath, CategoryID)
+	VALUES				  (@Name, @Price, ISNULL(@PrimaryImagePath, 'NoImages.jpg'), @CategoryID)
+	SELECT SCOPE_IDENTITY() AS 'NewProductID'
 END
 GO
 CREATE PROC spDeleteProduct
@@ -260,14 +263,14 @@ CREATE PROC spUpdateProduct
 (
 	@ProductID		INT,
 	@Name			VARCHAR(MAX),
-	@Prize			DECIMAL(7,2),
+	@Price			DECIMAL(7,2),
 	@PrimaryImagePath VARCHAR(MAX),
 	@CategoryID		INT 
 )
 AS BEGIN
 	UPDATE tbProduct SET
 	Name =			@Name,
-	Prize =			@Prize,
+	Price =			@Price,
 	PrimaryImagePath = ISNULL(@PrimaryImagePath, PrimaryImagePath),
 	CategoryID =	@CategoryID
 	WHERE ProductID = @ProductID
@@ -291,6 +294,7 @@ CREATE PROC spInsertOrder
 AS BEGIN
 	INSERT INTO tbOrder (OrderDate, PricePaid, CustomerID)
 	VALUES				(@OrderDate, @PricePaid, @CustomerID)
+	SELECT SCOPE_IDENTITY() AS 'NewOrderID'
 END
 GO
 CREATE PROC spDeleteOrder
@@ -335,6 +339,7 @@ CREATE PROC spInsertOrderDetail
 AS BEGIN
 	INSERT INTO tbOrderDetail (OrderID, ProductID, Quantity, Subtotal)
 	VALUES					  (@OrderID, @ProductID, @Quantity, @Subtotal)
+	SELECT SCOPE_IDENTITY() AS 'NewOrderDetailsID'
 END
 GO
 CREATE PROC spDeleteOrderDetail
@@ -367,7 +372,7 @@ CREATE PROC spGetOrderAndDetailsByOrderID -- Show all Details based on the Order
 	@OrderID		INT = NULL
 )
 AS BEGIN
-	SELECT tbOrder.OrderID, OrderDate, PricePaid, OrderDetailsID, FirstName, Name, Prize, Quantity, Subtotal FROM tbOrder 
+	SELECT tbOrder.OrderID, OrderDate, PricePaid, OrderDetailsID, FirstName, Name, Price, Quantity, Subtotal FROM tbOrder 
 	JOIN tbOrderDetail ON tbOrder.OrderID = tbOrderDetail.OrderID
 	JOIN tbCustomer ON tbOrder.CustomerID = tbCustomer.CustomerID
 	JOIN tbProduct ON tbProduct.ProductID = tbOrderDetail.ProductID
@@ -388,7 +393,8 @@ JOIN tbProduct ON tbCategory.CategoryID = tbProduct.CategoryID
 GROUP BY tbCategory.Name
 
 --3. Show the products listed by total amount paid (take into consideration quantity & price)
-SELECT Name, SUM(Prize * Quantity) as 'TOTAL AMOUNT PAID' FROM tbProduct 
+SELECT Name, SUM(Price * Quantity) as 'TOTAL AMOUNT PAID' FROM tbProduct 
 JOIN tbOrderDetail ON tbProduct.ProductID = tbOrderDetail.ProductID
 GROUP BY Name
 ORDER BY [TOTAL AMOUNT PAID] desc
+
