@@ -106,10 +106,11 @@ INSERT INTO tbOrderDetail -- one item on the first order, 3 items on the second 
 GO
 CREATE PROC spGetCategoryByID
 (
-	@CategoryID int
+	@CategoryID		INT = NULL
 )
 AS BEGIN
-	SELECT CategoryID, Name, './Images/' + ImagePath as ImagePath FROM tbCategory
+	SELECT CategoryID, Name, './Images/' + ImagePath as ImagePath FROM tbCategory 
+	WHERE CategoryID = ISNULL(@CategoryID, CategoryID)
 END
 GO
 CREATE PROC spInsertCategory
@@ -138,8 +139,8 @@ CREATE PROC spUpdateCategory
 )
 AS BEGIN
 	UPDATE tbCategory SET
-	Name = @Name,
-	ImagePath = ISNULL(@ImagePath, ImagePath)
+	Name =			@Name,
+	ImagePath =		ISNULL(@ImagePath, ImagePath)
 	WHERE CategoryID = @CategoryID
 END
 GO
@@ -151,7 +152,7 @@ CREATE PROC spLogin
 AS BEGIN
 	IF EXISTS (SELECT UserName, Password FROM tbCustomer where UserName = @UserName and Password = @Password)
 		BEGIN
-			SELECT * FROM tbCustomer WHERE @UserName = UserName and @Password = Password
+			SELECT * FROM tbCustomer WHERE UserName = @UserName and Password = @Password
 		END
 	ELSE 
 		BEGIN
@@ -161,10 +162,11 @@ END
 GO
 CREATE PROC spGetCustomerByID
 (
-	@CustomerID		INT
+	@CustomerID		INT = NULL
 )
 AS BEGIN
-	SELECT * FROM tbCustomer WHERE CustomerID = @CustomerID
+	SELECT * FROM tbCustomer
+	WHERE CustomerID = ISNULL(@CustomerID, CustomerID)
 END
 GO
 CREATE PROC spInsertCustomer
@@ -205,36 +207,188 @@ CREATE PROC spUpdateCustomer
 )
 AS BEGIN
 	UPDATE tbCustomer SET
-	FirstName = @FirstName,
-	LastName = @LastName,
-	Address = @Address,
-	City = @City,
-	PhoneNumber = @PhoneNumber,
-	UserName = @UserName,
-	Password = @Password,
-	AccessLevel = @AccessLevel
+	FirstName =		@FirstName,
+	LastName =		@LastName,
+	Address =		@Address,
+	City =			@City,
+	PhoneNumber =	@PhoneNumber,
+	UserName =		@UserName,
+	Password =		@Password,
+	AccessLevel =	@AccessLevel
 	WHERE CustomerID = @CustomerID
 END
 GO
-spGetProductsByCategoryID
-spGetProductByID
-spInsertProduct
-spDeleteProduct
-spUpdateProduct
-
-spGetOrderByID
-spInsertOrder
-spDeleteOrder
-spUpdateOrder
-
-spGetOrderDetailByID
-spInsertOrderDetail
-spDeleteOrderDetail
-spUpdateOrderDetail
-spGetOrderAndDetailsByOrderID -- Show all Details based on the OrderID
-
+CREATE PROC spGetProductsByCategoryID
+(
+	@CategoryID		INT = NULL
+)
+AS BEGIN
+	SELECT * FROM tbProduc
+	WHERE CategoryID = ISNULL(@CategoryID, CategoryID)
+END
+GO
+CREATE PROC spGetProductByID
+(
+	@ProductID		INT = NULL
+)
+AS BEGIN
+	SELECT * FROM tbProduct
+	WHERE ProductID = ISNULL(@ProductID, ProductID)
+END
+GO
+CREATE PROC spInsertProduct
+(
+	@Name			VARCHAR(MAX),
+	@Prize			DECIMAL(7,2),
+	@PrimaryImagePath VARCHAR(MAX),
+	@CategoryID		INT 
+)
+AS BEGIN
+	INSERT INTO tbProduct (Name, Prize, PrimaryImagePath, CategoryID)
+	VALUES				  (@Name, @Prize, ISNULL(@PrimaryImagePath, 'NoImages.jpg'), @CategoryID)
+END
+GO
+CREATE PROC spDeleteProduct
+(
+	@ProductID		INT
+)
+AS BEGIN
+	DELETE FROM tbProduct WHERE ProductID = @ProductID
+END
+GO
+CREATE PROC spUpdateProduct
+(
+	@ProductID		INT,
+	@Name			VARCHAR(MAX),
+	@Prize			DECIMAL(7,2),
+	@PrimaryImagePath VARCHAR(MAX),
+	@CategoryID		INT 
+)
+AS BEGIN
+	UPDATE tbProduct SET
+	Name =			@Name,
+	Prize =			@Prize,
+	PrimaryImagePath = ISNULL(@PrimaryImagePath, PrimaryImagePath),
+	CategoryID =	@CategoryID
+	WHERE ProductID = @ProductID
+END
+GO
+CREATE PROC spGetOrderByID
+(
+	@OrderID		INT = NULL
+)
+AS BEGIN
+	SELECT * FROM tbOrder
+	WHERE OrderID = ISNULL(@OrderID, OrderID)
+END
+GO
+CREATE PROC spInsertOrder
+(
+	@OrderDate		DATE,
+	@PricePaid		DECIMAL(7,2),
+	@CustomerID		INT
+)
+AS BEGIN
+	INSERT INTO tbOrder (OrderDate, PricePaid, CustomerID)
+	VALUES				(@OrderDate, @PricePaid, @CustomerID)
+END
+GO
+CREATE PROC spDeleteOrder
+(
+	@OrderID		INT
+)
+AS BEGIN
+	DELETE FROM tbOrder WHERE OrderID = @OrderID
+END
+GO
+CREATE PROC spUpdateOrder
+(
+	@OrderID		INT,
+	@OrderDate		DATE,
+	@PricePaid		DECIMAL(7,2),
+	@CustomerID		INT
+)
+AS BEGIN
+	UPDATE tbOrder SET
+	OrderDate =		@OrderDate,
+	PricePaid =		@PricePaid,
+	CustomerID =	@CustomerID
+	WHERE OrderID = @OrderID
+END
+GO
+CREATE PROC spGetOrderDetailByID
+(
+	@OrderDetailsID		INT = NULL
+)
+AS BEGIN
+	SELECT * FROM tbOrderDetail
+	WHERE OrderDetailsID = ISNULL(@OrderDetailsID, OrderDetailsID)
+END
+GO
+CREATE PROC spInsertOrderDetail
+(
+	@OrderID		INT,
+	@ProductID		INT,
+	@Quantity		INT,
+	@Subtotal		DECIMAL(7,2)
+)
+AS BEGIN
+	INSERT INTO tbOrderDetail (OrderID, ProductID, Quantity, Subtotal)
+	VALUES					  (@OrderID, @ProductID, @Quantity, @Subtotal)
+END
+GO
+CREATE PROC spDeleteOrderDetail
+(
+	@OrderDetailsID		INT
+)
+AS BEGIN
+	DELETE FROM tbOrderDetail WHERE OrderDetailsID = @OrderDetailsID
+END
+GO
+CREATE PROC spUpdateOrderDetail
+(
+	@OrderDetailsID	INT,
+	@OrderID		INT,
+	@ProductID		INT,
+	@Quantity		INT,
+	@Subtotal		DECIMAL(7,2)
+)
+AS BEGIN
+	UPDATE tbOrderDetail SET
+	OrderID =		@OrderID,
+	ProductID =		@ProductID,
+	Quantity =		@Quantity,
+	Subtotal =		@Subtotal
+	WHERE OrderDetailsID = @OrderDetailsID
+END
+GO
+CREATE PROC spGetOrderAndDetailsByOrderID -- Show all Details based on the OrderID
+(
+	@OrderID		INT = NULL
+)
+AS BEGIN
+	SELECT tbOrder.OrderID, OrderDate, PricePaid, OrderDetailsID, FirstName, Name, Prize, Quantity, Subtotal FROM tbOrder 
+	JOIN tbOrderDetail ON tbOrder.OrderID = tbOrderDetail.OrderID
+	JOIN tbCustomer ON tbOrder.CustomerID = tbCustomer.CustomerID
+	JOIN tbProduct ON tbProduct.ProductID = tbOrderDetail.ProductID
+	WHERE tbOrder.OrderID = ISNULL(@OrderID, tbOrder.OrderID)
+END
+GO
 
 -- Create these reports:
-1. Top 3 Customers for TOTAL spent among all orders
-2. Show each category and how many products are available in each
-3. Show the products listed by total amount paid (take into consideration quantity & price)
+--1. Top 3 Customers for TOTAL spent among all orders
+SELECT TOP 3 tbCustomer.CustomerID, UserName, FirstName, SUM(PricePaid) AS 'TOTAL SPENT' FROM tbCustomer 
+JOIN tbOrder ON tbCustomer.CustomerID = tbOrder.CustomerID
+GROUP BY tbCustomer.CustomerID, UserName, FirstName
+ORDER BY [TOTAL SPENT] DESC
+
+--2. Show each category and how many products are available in each
+SELECT tbCategory.Name, COUNT(*) as 'PRODUCT COUNT' FROM tbCategory 
+JOIN tbProduct ON tbCategory.CategoryID = tbProduct.CategoryID
+GROUP BY tbCategory.Name
+
+--3. Show the products listed by total amount paid (take into consideration quantity & price)
+SELECT Name, SUM(Prize * Quantity) as 'TOTAL AMOUNT PAID' FROM tbProduct 
+JOIN tbOrderDetail ON tbProduct.ProductID = tbOrderDetail.ProductID
+GROUP BY Name
+ORDER BY [TOTAL AMOUNT PAID] desc
