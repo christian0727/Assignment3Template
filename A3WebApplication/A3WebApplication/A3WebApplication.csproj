@@ -80,6 +80,7 @@
     <Content Include="Images\St.George.jpg" />
     <Content Include="Images\Teeling.jpg" />
     <Content Include="Images\Wines.jpg" />
+    <Content Include="Index.aspx" />
     <Content Include="packages.config" />
     <Content Include="MainMaster.Master" />
     <None Include="Web.Debug.config">
@@ -119,6 +120,13 @@
     </Compile>
     <Compile Include="CategoriesPage.aspx.designer.cs">
       <DependentUpon>CategoriesPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Index.aspx.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Index.aspx.designer.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
     </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
