@@ -33,7 +33,7 @@ namespace A3ClassLibrary
         }
 
         // BONUS 1 MARK: write method which impliments spInsertCategory
-        public void InsertCategory()
+        public void InsertCategory(string Name, string ImagePath)
         {
             string connStr = ConfigurationManager.ConnectionStrings["dbA3ConnStr"].ConnectionString;
             DAL_Project.DAL d = new DAL_Project.DAL(connStr);
@@ -68,7 +68,7 @@ namespace A3ClassLibrary
 
             string connStr = ConfigurationManager.ConnectionStrings["dbA3ConnStr"].ConnectionString;
             DAL_Project.DAL d = new DAL_Project.DAL(connStr);
-            DataSet ds = d.ExecuteProcedure("spGetCategories");
+            DataSet ds = d.ExecuteProcedure("spGetCategoryByID");
 
             foreach (DataRow category in ds.Tables[0].Rows)
             {

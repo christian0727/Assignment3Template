@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace A3ClassLibrary
 {
-    public class CartItem : Product
+    public class CartItem : Product, IEquatable<CartItem>, IComparable<CartItem>
     {
         public int Quantity { get; set; }
         public double SubTotal { get { return Price * Quantity; } }
@@ -39,6 +39,20 @@ namespace A3ClassLibrary
             d.AddParam("SubTotal", this.SubTotal);
 
             d.ExecuteProcedure("spInsertOrderDetail");
+        }
+
+       public bool Equals(CartItem other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+            return this.ProductID == other.ProductID;
+        }
+ 
+        public int CompareTo(CartItem other)
+        {
+            return Quantity.CompareTo(other.Quantity);
         }
     }
 }

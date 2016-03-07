@@ -11,6 +11,9 @@
   <a href="Index.aspx">Home</a>
   <asp:HyperLink ID="hlCategories" NavigateUrl="~/CategoriesPage.aspx" runat="server">Categories</asp:HyperLink>
   <asp:HyperLink ID="hlProducts" NavigateUrl="~/ProductsPage.aspx" runat="server">Products</asp:HyperLink>
+   <asp:HyperLink ID="hlCartPage" NavigateUrl="~/CartPage.aspx" runat="server">
+        MyCart(<asp:Label ID="lbCount" runat="server" Text="0"></asp:Label>)
+   </asp:HyperLink>
   <asp:HyperLink ID="hlAdmin" Visible="false" NavigateUrl="~/AdminPage.aspx" runat="server">Admin</asp:HyperLink>
   <asp:HyperLink ID="hlLogin" NavigateUrl="~/Login.aspx" runat="server">Login</asp:HyperLink>
   <asp:Label ID="lbMessage" runat="server" Visible="false" Text=""></asp:Label>
@@ -27,7 +30,6 @@
 
 <footer class="w3-container w3-center w3-green">
   <h5>Drink Responsibly</h5>
-  <p>"Trust Me You Can Dance"  -Vodka</p>
 </footer>   
 </body>
 </html> 

@@ -73,6 +73,7 @@
     <Content Include="Images\MartinMiller.jpg" />
     <Content Include="Images\Mezcal.jpg" />
     <Content Include="Images\Molinari.jpg" />
+    <Content Include="Images\NoImage.jpg" />
     <Content Include="Images\Pisco.jpg" />
     <Content Include="Images\PondView.jpg" />
     <Content Include="Images\Somrus.jpg" />
@@ -157,6 +158,10 @@
     <ProjectReference Include="..\A3ClassLibrary\A3ClassLibrary.csproj">
       <Project>{fefc6994-9e05-446f-b11c-9304f1c8af8c}</Project>
       <Name>A3ClassLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DAL_Project\DAL_Project.csproj">
+      <Project>{e3026510-5b06-4ff2-816b-3f06cbe5f7df}</Project>
+      <Name>DAL_Project</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

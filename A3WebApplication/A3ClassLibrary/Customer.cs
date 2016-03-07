@@ -104,7 +104,7 @@ namespace A3ClassLibrary
         }
 
         // BONUS 1 MARK: write method which impliments spInsertCustomer
-        public void InsertCustomer()
+        public void InsertCustomer(string FirstName, string LastName, string Address, string City, string PhoneNumber, string UserName, string Password, bool IsAdmin)
         {
             string connStr = ConfigurationManager.ConnectionStrings["dbA3ConnStr"].ConnectionString;
             DAL_Project.DAL d = new DAL_Project.DAL(connStr);

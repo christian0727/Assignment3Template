@@ -42,7 +42,7 @@ namespace A3ClassLibrary
             return listResult;
         }
         
-        public static Product GetProductByID(int productID)
+        public static Product GetProductByID(int? productID)
         {
             Product result = null;
             DAL_Project.DAL d = new DAL_Project.DAL(ConfigurationManager.ConnectionStrings["dbA3ConnStr"].ConnectionString);
@@ -65,7 +65,7 @@ namespace A3ClassLibrary
         
         // TODO 
         // 2 MARKS: write a method which impliments spInsertProduct
-        public void InsertProduct()
+        public void InsertProduct(int CategoryID, string Name, double Price, string PrimaryImagePath)
         {
             string connStr = ConfigurationManager.ConnectionStrings["dbA3ConnStr"].ConnectionString;
             DAL_Project.DAL d = new DAL_Project.DAL(connStr);
@@ -77,7 +77,7 @@ namespace A3ClassLibrary
             this.ProductID = Convert.ToInt32(ds.Tables[0].Rows[0]["NewProductID"].ToString());
         }
         // 2 MARKS: write a method which impliments spDeleteProduct
-        public void DeleteProduct()
+        public void DeleteProduct(int ProductID)
         {
             string connStr = ConfigurationManager.ConnectionStrings["dbA3ConnStr"].ConnectionString;
             DAL_Project.DAL d = new DAL_Project.DAL(connStr);
@@ -86,7 +86,7 @@ namespace A3ClassLibrary
         }
 
         // 2 MARKS: write a method which impliments spUpdateProduct
-        public void UpdateProduct()
+        public void UpdateProduct(int CategoryID,int ProductID, string Name, double Price, string PrimaryImagePath)
         {
             string connStr = ConfigurationManager.ConnectionStrings["dbA3ConnStr"].ConnectionString;
             DAL_Project.DAL d = new DAL_Project.DAL(connStr);

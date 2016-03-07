@@ -1,4 +1,5 @@
-﻿using System;
+﻿using A3ClassLibrary;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -27,11 +28,47 @@ namespace A3WebApplication
             try
             { 
             Security.Login(txtUserName.Text, txtPassword.Text);
-            Response.Redirect("index.aspx");
+            if (Security.IsCustomerAdmin())
+                {
+                    Response.Redirect("AdminPage.aspx");
+                }
+            else if (Security.IsCustomerLoggedIn())
+                {
+                    Response.Redirect("CategoriesPage.aspx");
+                }
             }
             catch (Exception)
             {
                 lbMessage.Visible = true;
+            }
+        }
+
+        protected void lbRegister_Click(object sender, EventArgs e)
+        {
+            pnlLogin.Visible = false;
+            pnlRegister.Visible = true;
+        }
+
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Customer customer = new Customer();
+                customer.InsertCustomer(txtFirstName.Text, txtLastName.Text, txtAddress.Text, txtCity.Text, txtPhoneNumber.Text, txtRegUserName.Text, txtRegPassword.Text, false);
+                txtFirstName.Text = "";
+                txtLastName.Text = "";
+                txtAddress.Text = "";
+                txtCity.Text = "";
+                txtPhoneNumber.Text = "";
+                txtRegPassword.Text = "";
+                txtRegUserName.Text = "";
+                pnlLogin.Visible = true;
+                pnlRegister.Visible = false;
+            }
+            catch
+            {
+                ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "ClientScript", "alert('UserName is Already Taken')", true);
             }
         }
     }

@@ -40,6 +40,24 @@ namespace A3WebApplication {
         protected global::System.Web.UI.WebControls.HyperLink hlProducts;
         
         /// <summary>
+        /// hlCartPage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink hlCartPage;
+        
+        /// <summary>
+        /// lbCount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbCount;
+        
+        /// <summary>
         /// hlAdmin control.
         /// </summary>
         /// <remarks>

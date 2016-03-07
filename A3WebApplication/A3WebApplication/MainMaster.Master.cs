@@ -21,6 +21,7 @@ namespace A3WebApplication
                     hlAdmin.Visible = true;
                     lbMessage.Visible = true;
                     lbMessage.Text = "Welcome " + Security.CurrentCustomer.FirstName;
+                    lbCount.Text = SessionCart.Instance.Cart.Count().ToString();
                 }
                 else if (Security.IsCustomerLoggedIn())
                 {
@@ -28,6 +29,7 @@ namespace A3WebApplication
                     lbLogout.Visible = true;
                     lbMessage.Visible = true;
                     lbMessage.Text = "Welcome " + Security.CurrentCustomer.FirstName;
+                    lbCount.Text = SessionCart.Instance.Cart.Count().ToString();
                 }
                 else
                 {
@@ -35,6 +37,7 @@ namespace A3WebApplication
                     lbLogout.Visible = false;
                     hlAdmin.Visible = false;
                     lbMessage.Visible = false;
+                    lbCount.Text = SessionCart.Instance.Cart.Count().ToString();
                 }
             }
 

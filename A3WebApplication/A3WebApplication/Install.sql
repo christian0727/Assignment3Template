@@ -70,7 +70,7 @@ INSERT INTO tbCategory -- 4 categories
 ('Spirits', 'Spirits.jpg'),
 ('Liqueurs', 'Liqueurs.jpg'),
 ('Wines', 'Wines.jpg'),
-('Beers', 'Beer.jpg')
+('Beers', 'Beers.jpg')
 
 INSERT INTO tbProduct  -- 6 products in category one, 3 products in category two, 1 in category three
 (Name, PrimaryImagePath, Price, CategoryID) VALUES
@@ -182,9 +182,16 @@ CREATE PROC spInsertCustomer
 	@AccessLevel	BIT
 )
 AS BEGIN
-	INSERT INTO tbCustomer(FirstName, LastName, Address, City, PhoneNumber, UserName, Password, AccessLevel)
-	VALUES				  (@FirstName, @LastName, @Address, @City, @PhoneNumber, @UserName, @Password, @AccessLevel)
-	SELECT SCOPE_IDENTITY() AS 'NewCustomerID'
+	IF EXISTS (SELECT * FROM tbCustomer where UserName = @UserName)
+		BEGIN
+		SELECT 'UserTaken' as UserName
+		END
+	ELSE
+		BEGIN
+		INSERT INTO tbCustomer(FirstName, LastName, Address, City, PhoneNumber, UserName, Password, AccessLevel)
+		VALUES				  (@FirstName, @LastName, @Address, @City, @PhoneNumber, @UserName, @Password, @AccessLevel)
+		SELECT SCOPE_IDENTITY() AS 'NewCustomerID'
+		END
 END
 GO
 CREATE PROC spDeleteCustomer
@@ -225,7 +232,7 @@ CREATE PROC spGetProductsByCategoryID
 	@CategoryID		INT = NULL
 )
 AS BEGIN
-	SELECT * FROM tbProduc
+	SELECT * FROM tbProduct
 	WHERE CategoryID = ISNULL(@CategoryID, CategoryID)
 END
 GO
@@ -264,7 +271,7 @@ CREATE PROC spUpdateProduct
 	@ProductID		INT,
 	@Name			VARCHAR(MAX),
 	@Price			DECIMAL(7,2),
-	@PrimaryImagePath VARCHAR(MAX),
+	@PrimaryImagePath VARCHAR(MAX) = null,
 	@CategoryID		INT 
 )
 AS BEGIN
@@ -398,3 +405,4 @@ JOIN tbOrderDetail ON tbProduct.ProductID = tbOrderDetail.ProductID
 GROUP BY Name
 ORDER BY [TOTAL AMOUNT PAID] desc
 
+select * from tbOrder

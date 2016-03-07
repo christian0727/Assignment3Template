@@ -12,10 +12,10 @@
     </div>
     <div class="w3-third">
       <div class="w3-card-2 w3-padding">
-        <p>Some text..</p>
+        <p>"Trust Me You Can Dance"  </p>
       </div><br>
       <div class="w3-card-2 w3-padding">
-        <p>Some text..</p>
+        <p>-Vodka</p>
       </div>
     </div>
   </div>

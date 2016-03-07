@@ -13,5 +13,10 @@ namespace A3WebApplication
         {
 
         }
+
+        protected void dlCategory_ItemCommand(object source, DataListCommandEventArgs e)
+        {
+            Response.Redirect("ProductsPage.aspx?CategoryID=" + e.CommandArgument.ToString());
+        }
     }
 }
