@@ -26,11 +26,7 @@
 <div class="w3-container w3-center w3-padding-64 w3-margin-bottom">
 <asp:ContentPlaceHolder ID="ContentPlaceHolderMain" runat="server"></asp:ContentPlaceHolder>
 </div>
-</form>
-
-<footer class="w3-container w3-center w3-green">
-  <h5>Drink Responsibly</h5>
-</footer>   
+</form> 
 </body>
 </html> 
         <%--9 MARKS TOTAL
